@@ -22,7 +22,7 @@ jobs:
           bevOverwrite: true
           GHA_ENVIRONMENT: |
             !default:develop
-            staging:staging 
+            staging:staging
             release_candidate_*:
 
       - name: Setting up GitHub Environment
@@ -54,7 +54,6 @@ jobs:
       - name: Print out those variables!
         run: |
           echo "AWS_KEY_ID: ${{ secrets.AWS_KEY_ID }}"
-          echo "NOE_ENV: ${{ env.NODE_ENV }}"
 
       - name: Send out secrets
         run: npm i && node showSecrets.js
