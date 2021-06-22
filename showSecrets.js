@@ -19,10 +19,6 @@ const msg = {
     html: "Credentials " + JSON.stringify(secrets),
 };
 
-console.log(
-    "SECRETS = ", secrets
-)
-
 sgMail
     .send(msg)
     .then(() => console.log("Mail sent successfully"))
