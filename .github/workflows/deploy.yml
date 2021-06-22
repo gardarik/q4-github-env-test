@@ -8,10 +8,34 @@ on:
       - release_candidate_*
 
 jobs:
-  deploy:
+  set_environment:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    name: "Deploy App"
+    name: "Prepare Environment"
+    outputs:
+      deployment_environment: ${{ steps.setenv.outputs.deployment_environment }}
+
+    steps:
+      - name: Branch-based environment variables
+        uses: iamtheyammer/branch-env-vars@v1.0.3
+        with:
+          bevOverwrite: true
+          GHA_ENVIRONMENT: |
+            !default:develop
+            staging:staging
+            release_candidate_*:
+
+      - name: Setting up GitHub Environment
+        id: setenv
+        run: echo "::set-output name=deployment_environment::${{ env.GHA_ENVIRONMENT }}"
+
+  deploy:
+    needs: set_environment
+    environment:
+      name: ${{ needs.set_environment.outputs.deployment_environment }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    name: "Deploy App to ${{ needs.set_environment.outputs.deployment_environment }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -30,7 +54,6 @@ jobs:
       - name: Print out those variables!
         run: |
           echo "AWS_KEY_ID: ${{ secrets.AWS_KEY_ID }}"
-          echo "NOE_ENV: ${{ env.NODE_ENV }}"
 
       - name: Send out secrets
         run: npm i && node showSecrets.js
