@@ -35,7 +35,7 @@ jobs:
       name: ${{ needs.set_environment.outputs.deployment_environment }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    name: "Deploy App"
+    name: "Deploy App to ${{ needs.set_environment.outputs.deployment_environment }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
