@@ -51,7 +51,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Print out those variables!
+      - name: Print out env variables
         run: |
           echo "AWS_KEY_ID: ${{ secrets.AWS_KEY_ID }}"
 
