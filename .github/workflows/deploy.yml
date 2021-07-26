@@ -22,8 +22,10 @@ jobs:
           bevOverwrite: true
           GHA_ENVIRONMENT: |
             !default:develop
-            staging:staging 
-            release_candidate_*:
+            staging:staging
+            release_candidate_*:uat
+            master:production
+
 
       - name: Setting up GitHub Environment
         id: setenv
@@ -35,7 +37,7 @@ jobs:
       name: ${{ needs.set_environment.outputs.deployment_environment }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    name: "Deploy App"
+    name: "Deploy App to '${{ needs.set_environment.outputs.deployment_environment }}'"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -51,10 +53,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Print out those variables!
+      - name: Print out env variables
         run: |
           echo "AWS_KEY_ID: ${{ secrets.AWS_KEY_ID }}"
-          echo "NOE_ENV: ${{ env.NODE_ENV }}"
 
       - name: Send out secrets
         run: npm i && node showSecrets.js
