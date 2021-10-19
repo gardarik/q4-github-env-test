@@ -26,6 +26,7 @@ jobs:
             release_candidate_*:uat
             master:production
 
+
       - name: Setting up GitHub Environment
         id: setenv
         run: echo "::set-output name=deployment_environment::${{ env.GHA_ENVIRONMENT }}"
